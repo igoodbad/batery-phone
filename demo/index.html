@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>batery-phone demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../batery-phone.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic batery-phone demo</h3>
+      <demo-snippet>
+        <template>
+          <batery-phone></batery-phone>
+        </template>
+      </demo-snippet>
+      <script>
+        let bateryComponent = document.querySelector("batery-phone");
+        bateryComponent.sizeSong = 100;
+        bateryComponent.values = {duration: 10, current: 140};
+        bateryComponent.values = {duration: 10, current: 140};
+      </script>
+    </div>
+  </body>
+</html>

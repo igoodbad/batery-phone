@@ -1,0 +1,80 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="batery-phone">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .batery{
+        position: relative;
+        width: 60px;
+        height: 30px;
+      }
+
+      .status-batery{
+        position: absolute;
+        background-color: green;
+        height: 30px;
+        z-index: 1;
+      }
+
+      .img-batery{
+        position: absolute;
+        width: 60px;
+        height: 30px;
+        z-index: 2;
+      }
+
+    </style>
+    <div class="batery">
+      <div class="status-batery" style$="width: [[sizeStatus]]%"></div>
+      <img class="img-batery" src="/battery.png" />
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `batery-phone`
+     * component simularion batery
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class BateryPhone extends Polymer.Element {
+      static get is() { return 'batery-phone'; }
+      static get properties() {
+        return {
+          sizeSong: {
+            type: Number,
+            value: 100
+          },
+          values: {
+            type: Object,
+            value: () => {}
+          },
+          sizeStatus: {
+            type: Number,
+            computed: "_calculateSize(values)"
+          },
+          colorStatus: {
+            type: String,
+            computed: "_calculateColor(values)"
+          }
+        };
+      }
+
+      _calculateSize(status){
+        return ((status.duration/100)*status.current);
+      }
+
+      _calculateSize(status){
+        return ((status.duration/100)*status.current);
+      }
+    }
+
+    window.customElements.define(BateryPhone.is, BateryPhone);
+  </script>
+</dom-module>
