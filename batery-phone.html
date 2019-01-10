@@ -7,13 +7,13 @@
         display: block;
       }
 
-      .batery{
+      .batery {
         position: relative;
         width: 60px;
         height: 30px;
       }
 
-      .status-batery{
+      .status-batery {
         position: absolute;
         height: 30px;
         width: 100%;
@@ -21,13 +21,13 @@
         z-index: 1;
         text-align: center;
       }
-      .img-batery{
+
+      .img-batery {
         position: absolute;
         width: 60px;
         height: 30px;
         z-index: 2;
       }
-
     </style>
     <div class="batery">
       <div class="status-batery" style$="width: [[sizeStatus]]%;background-color:[[colorStatus]]"></div>
@@ -50,7 +50,7 @@
         return {
           chargeBatery: {
             type: Number,
-            value: 100
+            value: 40
           },
           sizeSong: {
             type: Number,
@@ -58,7 +58,7 @@
           },
           values: {
             type: Object,
-            value: () => {}
+            value: () => { }
           },
           sizeStatus: {
             type: Number,
@@ -67,25 +67,58 @@
           colorStatus: {
             type: String,
             computed: "_calculateColor(sizeStatus)"
+          },
+          chargin: {
+            type: Boolean,
+            value: false,
+            observer: "_iCharging"
+          },
+
+          eventCharge: {
+            type: Event,
+            value: () => { }
           }
         };
       }
 
-      _calculateSize(status){
-        return (100-((status.current*100)/this.sizeSong));
+      _iCharging() {
+        if (this.chargin) {
+          this.eventCharge = setInterval(() => {
+            this.set("chargeBatery", this.chargeBatery + 2);
+            if(this.chargeBatery > 100){
+              this.set("chargeBatery", 100);
+            }
+            this.set("values", {});
+          }, 1000);
+        }else{
+          clearInterval(this.eventCharge);
+        }
       }
 
-      _calculateColor(status){
+      _calculateSize(status) {
+        if (!this.chargin) {
+          this.set("chargeBatery", this.chargeBatery - 1);
+        }
+        if (this.chargeBatery >= 100) {
+          this.set("chargeBatery", 100);
+        }
+        if (this.chargeBatery <= 0) {
+          this.set("chargeBatery", 0);
+        }
+        return this.chargeBatery;
+      }
+
+      _calculateColor(status) {
         let color = "";
-        if(status > 80){
+        if (status > 80) {
           color = "#748e40";
-        }else if(status >60 && status<=80){
+        } else if (status > 60 && status <= 80) {
           color = "#b4bf41";
-        }else if(status > 40 && status <= 60){
+        } else if (status > 40 && status <= 60) {
           color = "#e2ee1c";
-        }else if(status > 20 && status <= 40){
+        } else if (status > 20 && status <= 40) {
           color = "#d6681e";
-        }else{
+        } else {
           color = "red";
         }
         return color;
