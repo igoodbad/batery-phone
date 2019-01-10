@@ -15,11 +15,12 @@
 
       .status-batery{
         position: absolute;
-        background-color: green;
         height: 30px;
+        width: 100%;
+        background-color: #748e40;
         z-index: 1;
+        text-align: center;
       }
-
       .img-batery{
         position: absolute;
         width: 60px;
@@ -29,8 +30,8 @@
 
     </style>
     <div class="batery">
-      <div class="status-batery" style$="width: [[sizeStatus]]%"></div>
-      <img class="img-batery" src="/battery.png" />
+      <div class="status-batery" style$="width: [[sizeStatus]]%;background-color:[[colorStatus]]"></div>
+      <img class="img-batery" src="bower_components/batery-phone/battery.png" />
     </div>
   </template>
 
@@ -47,9 +48,13 @@
       static get is() { return 'batery-phone'; }
       static get properties() {
         return {
-          sizeSong: {
+          chargeBatery: {
             type: Number,
             value: 100
+          },
+          sizeSong: {
+            type: Number,
+            value: 0
           },
           values: {
             type: Object,
@@ -61,18 +66,31 @@
           },
           colorStatus: {
             type: String,
-            computed: "_calculateColor(values)"
+            computed: "_calculateColor(sizeStatus)"
           }
         };
       }
 
       _calculateSize(status){
-        return ((status.duration/100)*status.current);
+        return (100-((status.current*100)/this.sizeSong));
       }
 
-      _calculateSize(status){
-        return ((status.duration/100)*status.current);
+      _calculateColor(status){
+        let color = "";
+        if(status > 80){
+          color = "#748e40";
+        }else if(status >60 && status<=80){
+          color = "#b4bf41";
+        }else if(status > 40 && status <= 60){
+          color = "#e2ee1c";
+        }else if(status > 20 && status <= 40){
+          color = "#d6681e";
+        }else{
+          color = "red";
+        }
+        return color;
       }
+
     }
 
     window.customElements.define(BateryPhone.is, BateryPhone);
